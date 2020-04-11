@@ -1,0 +1,12 @@
+{
+  "name": "nodeserver",
+  "version": "1.0.0",
+  "description": "A WebSocket Node Server for Multiplayer Unity Games",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "ws": "^7.2.3"
+  }
+}
