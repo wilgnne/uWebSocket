@@ -1,12 +1,28 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 using WebSocketSharp;
 
+struct EmitStruct<T> {
+    public string e;
+    public T data;
+
+    public EmitStruct (string _e, T _data) {
+        e = _e;
+        data = _data;
+    }
+}
+
 public class ConnectionController : MonoBehaviour {
-    public static WebSocket ws { get; private set; }
+    WebSocket ws;
     public string url = "ws://localhost:3000";
+    Dictionary<string, List<EventHandler<MessageEventArgs>>> messegesCallback;
+
     void Awake () {
+        messegesCallback = new Dictionary<string, List<EventHandler<MessageEventArgs>>> ();
+
         ws = new WebSocket (url);
 
         ws.OnMessage += (sender, e) => {
@@ -19,23 +35,39 @@ public class ConnectionController : MonoBehaviour {
             Debug.LogError ("uWebSocket Error: " + e.ToString ());
         };
         ws.OnOpen += (sender, e) => {
-            Debug.Log ("uWebSocket Connection Open: " + e.ToString ());
+            Debug.Log ("uWebSocket Connection Open");
         };
-        
-        ws.OnOpen += (sender, e) => {
-            Debug.Log("Sending BALUS");
-            ws.Send("BALUS");
-        };
+    }
 
+    void Start() {
         ws.Connect ();
     }
-    // Start is called before the first frame update
-    void Start () {
 
+    public void Emit<T> (string e, T data) {
+        EmitStruct<T> emit = new EmitStruct<T> (e, data);
+        ws.Send (JsonConvert.SerializeObject (emit));
     }
 
-    // Update is called once per frame
-    void Update () {
+    public void Emit (string e) {
+        EmitStruct<string> emit = new EmitStruct<string> (e, "");
+        ws.Send (JsonConvert.SerializeObject (emit));
+    }
 
+    public void On (string e, EventHandler<MessageEventArgs> cb) {
+        if (messegesCallback.ContainsKey (e)) {
+            messegesCallback[e].Add (cb);
+            return;
+        }
+        messegesCallback.Add (e, new List<EventHandler<MessageEventArgs>> {
+            cb
+        });
+    }
+
+    public void OnConnect (EventHandler cb) {
+        ws.OnOpen += cb;
+    }
+
+    public void OnDiconect (EventHandler<CloseEventArgs> cb) {
+        ws.OnClose += cb;
     }
 }
