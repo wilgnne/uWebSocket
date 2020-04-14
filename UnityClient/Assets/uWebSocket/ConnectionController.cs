@@ -6,11 +6,11 @@ using Newtonsoft.Json;
 using UnityEngine;
 using WebSocketSharp;
 
-struct EmitStruct<T> {
+struct MessageHandler<T> {
     public string e;
     public T data;
 
-    public EmitStruct (string _e, T _data) {
+    public MessageHandler (string _e, T _data) {
         e = _e;
         data = _data;
     }
@@ -57,12 +57,12 @@ public class ConnectionController : MonoBehaviour {
     }
 
     public void Emit<T> (string e, T data) {
-        EmitStruct<T> emit = new EmitStruct<T> (e, data);
+        MessageHandler<T> emit = new MessageHandler<T> (e, data);
         ws.Send (JsonConvert.SerializeObject (emit));
     }
 
     public void Emit (string e) {
-        EmitStruct<string> emit = new EmitStruct<string> (e, "");
+        MessageHandler<string> emit = new MessageHandler<string> (e, "");
         ws.Send (JsonConvert.SerializeObject (emit));
     }
 
