@@ -16,15 +16,17 @@ struct MessageHandler<T> {
     }
 }
 
+public delegate void OnCallback (string data);
+
 public class ConnectionController : MonoBehaviour {
     WebSocket ws;
     public string url = "ws://localhost:3000";
     public bool connectOnStart = true;
     bool connected = false;
-    Dictionary<string, List<EventHandler<MessageEventArgs>>> messegesCallback;
+    Dictionary<string, List<OnCallback>> messegesCallback;
 
     void Awake () {
-        messegesCallback = new Dictionary<string, List<EventHandler<MessageEventArgs>>> ();
+        messegesCallback = new Dictionary<string, List<OnCallback>> ();
 
         ws = new WebSocket (url);
 
@@ -66,12 +68,12 @@ public class ConnectionController : MonoBehaviour {
         ws.Send (JsonConvert.SerializeObject (emit));
     }
 
-    public void On (string e, EventHandler<MessageEventArgs> cb) {
+    public void On (string e, OnCallback cb) {
         if (messegesCallback.ContainsKey (e)) {
             messegesCallback[e].Add (cb);
             return;
         }
-        messegesCallback.Add (e, new List<EventHandler<MessageEventArgs>> {
+        messegesCallback.Add (e, new List<OnCallback> {
             cb
         });
     }
