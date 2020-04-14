@@ -23,8 +23,8 @@ public class ChatController : MonoBehaviour {
             chatPanel.SetActive (true);
         });
 
-        ws.On("message", (sender, e) => {
-            
+        ws.On("message", (data) => {
+            Debug.Log(data);
         });
     }
 

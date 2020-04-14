@@ -31,6 +31,11 @@ public class ConnectionController : MonoBehaviour {
         ws = new WebSocket (url);
 
         ws.OnMessage += (sender, e) => {
+            MessageHandler<string> reciveEvent = JsonConvert.DeserializeObject<MessageHandler<string>>(e.Data.ToString());
+
+            //Cabe refatoração
+            messegesCallback.ToList().FindAll((value) => value.Key == reciveEvent.e).ForEach((value) => value.Value.ForEach(cb => cb(reciveEvent.data)));
+
             Debug.Log ("Laputa says: " + e.Data);
         };
         ws.OnClose += (sender, e) => {
