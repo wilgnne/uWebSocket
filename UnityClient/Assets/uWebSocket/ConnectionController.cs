@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
@@ -18,6 +19,8 @@ struct EmitStruct<T> {
 public class ConnectionController : MonoBehaviour {
     WebSocket ws;
     public string url = "ws://localhost:3000";
+    public bool connectOnStart = true;
+    bool connected = false;
     Dictionary<string, List<EventHandler<MessageEventArgs>>> messegesCallback;
 
     void Awake () {
@@ -30,17 +33,27 @@ public class ConnectionController : MonoBehaviour {
         };
         ws.OnClose += (sender, e) => {
             Debug.LogWarning ("uWebSocket Close: " + e.Reason);
+            connected = false;
         };
         ws.OnError += (sender, e) => {
-            Debug.LogError ("uWebSocket Error: " + e.ToString ());
+            Debug.LogError ("uWebSocket Error: " + e.Exception + " message:" + e.Message);
         };
         ws.OnOpen += (sender, e) => {
             Debug.Log ("uWebSocket Connection Open");
         };
     }
 
-    void Start() {
-        ws.Connect ();
+    void Start () {
+        if (connectOnStart)
+            Connect();
+    }
+
+    public void Connect ()
+    {
+        if (!connected){
+            ws.Connect();
+            connected = true;
+        }
     }
 
     public void Emit<T> (string e, T data) {
