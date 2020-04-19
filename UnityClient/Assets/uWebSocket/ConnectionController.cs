@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using UnityEngine;
 using WebSocketSharp;
@@ -17,6 +17,7 @@ struct MessageHandler<T> {
 }
 
 public delegate void OnCallback (string data);
+delegate void Lambda ();
 
 public class ConnectionController : MonoBehaviour {
     WebSocket ws;
@@ -25,13 +26,17 @@ public class ConnectionController : MonoBehaviour {
     bool connected = false;
     Dictionary<string, List<OnCallback>> messegesCallback;
 
+    Queue<Lambda> eventsQueue;
+
     void Awake () {
         messegesCallback = new Dictionary<string, List<OnCallback>> ();
+        eventsQueue = new Queue<Lambda> ();
 
         ws = new WebSocket (url);
 
         ws.OnMessage += (sender, e) => {
-            MessageHandler<string> reciveEvent = JsonConvert.DeserializeObject<MessageHandler<string>>(e.Data.ToString());
+            // Debug.Log ("uWebSocket Message: " + e.Data.ToString ());
+            MessageHandler<string> reciveEvent = JsonConvert.DeserializeObject<MessageHandler<string>> (e.Data.ToString ());
 
             //Cabe refatoração
             messegesCallback.ToList().FindAll((value) => value.Key == reciveEvent.e).ForEach((value) => value.Value.ForEach(cb => cb(reciveEvent.data)));
@@ -52,13 +57,24 @@ public class ConnectionController : MonoBehaviour {
 
     void Start () {
         if (connectOnStart)
-            Connect();
+            Connect ();
+
+        StartCoroutine ("EventsLoop");
     }
 
-    public void Connect ()
-    {
-        if (!connected){
-            ws.Connect();
+    IEnumerator EventsLoop () {
+
+        while (true) {
+            if (eventsQueue.Count != 0) {
+                eventsQueue.Dequeue () ();
+            }
+            yield return null;
+        }
+    }
+
+    public void Connect () {
+        if (!connected) {
+            ws.Connect ();
             connected = true;
         }
     }
