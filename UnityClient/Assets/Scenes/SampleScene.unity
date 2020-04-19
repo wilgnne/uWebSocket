@@ -292,11 +292,11 @@ RectTransform:
   m_Father: {fileID: 1051185716}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000011444, y: 185}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 256, y: 64}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &119074162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1013,7 +1013,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 590306146}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1739611801}
+        m_MethodName: SendButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &590306146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1158,11 +1169,11 @@ RectTransform:
   m_Father: {fileID: 2072925465}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -0.0028927175}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &615231660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1428,7 +1439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 615231659}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 1
   m_Elasticity: 0.1
@@ -1797,8 +1808,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 824781184}
   m_HandleRect: {fileID: 824781183}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.5
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2283,6 +2294,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loginPanel: {fileID: 1051185715}
   nameField: {fileID: 2139519577}
+  chatPanel: {fileID: 602394696}
+  messageField: {fileID: 24223396}
+  content: {fileID: 615231659}
+  messageFrame: {fileID: 2245506483847206680, guid: 51e7024006230c240b7eda33b1069d99,
+    type: 3}
 --- !u!1 &1955336588
 GameObject:
   m_ObjectHideFlags: 0

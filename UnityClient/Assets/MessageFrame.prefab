@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 5900923543981781326}
   - component: {fileID: 4008126243608841257}
   - component: {fileID: 6231754718121457638}
+  - component: {fileID: 7812484036194516957}
   m_Layer: 5
-  m_Name: Message
+  m_Name: MessageFrame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,6 +76,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7812484036194516957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2245506483847206680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45a4d225b2fe84755b7c901b4c4a2716, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameFrame: {fileID: 4807565847580263281}
+  messageFrame: {fileID: 3006366275080405091}
 --- !u!1 &5851270527022444026
 GameObject:
   m_ObjectHideFlags: 0
