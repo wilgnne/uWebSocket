@@ -11,7 +11,7 @@ interface MessageHandler {
 }
 
 class Socket {
-    private socket: WebSocket;
+    socket: WebSocket;
     private events: EventHandler[];
 
     constructor(socket: WebSocket) {
@@ -44,6 +44,10 @@ class Socket {
         this.events = [...this.events, { event, cb }];
         console.log("New Socket Event Registered: ", this.events);
     };
+
+    onError(cb: (err: Error) => void) {
+        this.socket.on("error", cb);
+    }
 
     emit(event: string): void;
     emit(event: string, data: any): void;
