@@ -39,9 +39,21 @@ public class ConnectionController : MonoBehaviour {
             MessageHandler<string> reciveEvent = JsonConvert.DeserializeObject<MessageHandler<string>> (e.Data.ToString ());
 
             //Cabe refatoração
-            messegesCallback.ToList().FindAll((value) => value.Key == reciveEvent.e).ForEach((value) => value.Value.ForEach(cb => cb(reciveEvent.data)));
-
-            Debug.Log ("Laputa says: " + e.Data);
+            // Para cada messageCallback
+            messegesCallback.ToList ()
+                // Procuramos os eventos correspondentes
+                .FindAll ((value) => value.Key == reciveEvent.e)
+                // Para cada evento
+                .ForEach ((value) => {
+                    // Para cada Callback de evento
+                    value.Value.ForEach (cb => {
+                        // Adicionamos uma função anonima
+                        eventsQueue.Enqueue (() => {
+                            // Que chama o callback com injeção da dependencia
+                            cb (reciveEvent.data);
+                        });
+                    });
+                });
         };
         ws.OnClose += (sender, e) => {
             Debug.LogWarning ("uWebSocket Close: " + e.Reason);
