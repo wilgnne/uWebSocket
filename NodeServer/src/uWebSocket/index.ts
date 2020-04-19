@@ -48,12 +48,13 @@ class Socket {
     emit(event: string): void;
     emit(event: string, data: any): void;
     emit(event: string, data?: any) {
-        if (data) {
-            console.log("Há data");
-        }
-        else {
-
-        }
+        const message: MessageHandler = {
+            e: event,
+            data: JSON.stringify(data) || "",
+        };
+        const messageJSON = JSON.stringify(message);
+        this.socket.send(messageJSON);
+        console.log("uWebSocket Emit:", messageJSON);
     }
 }
 
