@@ -70,6 +70,13 @@ class uServer {
 
         this.wss.on('connection', (webSocket) => {
             const socket = new Socket(webSocket);
+
+            socket.onError((err) => {
+                if (socket.socket.readyState !== WebSocket.OPEN) {
+                    this.sockets.slice(this.sockets.indexOf(socket), 1);
+                }
+            });
+
             this.sockets = [...this.sockets, socket];
             this.events.filter(value => value.event === 'connection').map(event => event.cb(socket));
         });
