@@ -78,6 +78,15 @@ class uServer {
     on(event: string, cb: (socket: Socket) => void) {
         this.events = [...this.events, { event, cb }];
     }
+
+    broadcast(event: string, data?: any) {
+        this.sockets.forEach((socket) => {
+            const client = socket.socket;
+            if (client.readyState === WebSocket.OPEN) {
+                socket.emit(event, data);
+            }
+        });
+    }
 }
 
 export default uServer;
